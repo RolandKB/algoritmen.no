@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="no">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kompilatør – Algoritmen.no</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-900 text-white font-mono min-h-screen flex flex-col">
+    <!-- HEADER -->
+    <header class="p-6 border-b border-gray-700">
+      <div class="container mx-auto flex justify-between items-center">
+        <h1 class="text-2xl font-bold text-green-400">kompilatør.no</h1>
+        <nav class="space-x-4">
+          <a href="/" class="hover:underline text-blue-400">Hjem</a>
+          <a href="/#lab" class="hover:underline text-blue-400"
+            >Tilbake til labs</a
+          >
+        </nav>
+      </div>
+    </header>
+
+    <!-- MAIN -->
+    <main class="flex-1 container mx-auto px-4 py-10">
+      <h2 class="text-3xl md:text-4xl font-bold mb-6 text-center text-pink-400">
+        Kompilatør (norsk kode)
+      </h2>
+      <p class="text-center text-gray-300 mb-6">
+        Skriv kode med norsk syntaks – vi oversetter og kjører det som
+        JavaScript.
+      </p>
+
+      <div class="mb-4">
+        <label for="code" class="block mb-2 font-semibold"
+          >Norsk pseudokode:</label
+        >
+        <textarea
+          id="code"
+          class="w-full h-64 p-4 bg-gray-800 text-pink-200 rounded-lg"
+          spellcheck="false"
+        >
+// Eksempel:
+sett navn til "Knut"
+skriv "Hei, " + navn
+
+hvis navn == "Knut" så
+    skriv "Velkommen tilbake!"
+slutt
+      </textarea
+        >
+      </div>
+
+      <button
+        onclick="runNorskKode()"
+        class="bg-pink-500 hover:bg-pink-600 px-6 py-2 rounded font-semibold"
+      >
+        Kompiler og kjør
+      </button>
+
+      <div class="mt-8">
+        <h3 class="text-lg font-semibold mb-2 text-gray-300">Output:</h3>
+        <pre
+          id="output"
+          class="bg-black text-pink-200 p-4 rounded min-h-[100px]"
+        ></pre>
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer
+      class="text-center text-gray-500 text-sm p-4 border-t border-gray-700 mt-auto"
+    >
+      © 2025 kompilatør.no – Fordi syntaks også kan være norsk
+    </footer>
+
+    <!-- SCRIPT -->
+    <script>
+      function translateNorskToJS(norskKode) {
+        let linjer = norskKode.split("\n");
+        let js = [];
+
+        for (let linje of linjer) {
+          linje = linje.trim();
+          if (linje.startsWith("//") || linje === "") continue;
+
+          linje = linje
+            .replace(/sett (\w+) til (.+)/, "let $1 = $2;")
+            .replace(/skriv (.+)/, "print($1);")
+            .replace(/hvis (.+) så/, "if ($1) {")
+            .replace(/ellers/, "} else {")
+            .replace(/slutt/, "}")
+            .replace(/funksjon (\w+)\((.*?)\)/, "function $1($2) {");
+
+          js.push(linje);
+        }
+
+        return js.join("\n");
+      }
+
+      function print(msg) {
+        const output = document.getElementById("output");
+        output.innerText += msg + "\n";
+      }
+
+      function runNorskKode() {
+        const input = document.getElementById("code").value;
+        const jsCode = translateNorskToJS(input);
+        document.getElementById("output").innerText = ""; // tøm konsoll
+
+        try {
+          new Function("print", jsCode)(print); // print som parameter
+        } catch (e) {
+          print("Feil: " + e.message);
+        }
+      }
+    </script>
+  </body>
+</html>

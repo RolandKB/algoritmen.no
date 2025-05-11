@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="no">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Arduino-lab – Algoritmen.no</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-900 text-white font-mono min-h-screen flex flex-col">
+    <!-- HEADER -->
+    <header class="p-6 border-b border-gray-700">
+      <div class="container mx-auto flex justify-between items-center">
+        <h1 class="text-2xl font-bold text-green-400">algoritmen.no</h1>
+        <nav class="space-x-4">
+          <a href="/" class="hover:underline text-blue-400">Hjem</a>
+          <a href="/#lab" class="hover:underline text-blue-400"
+            >Tilbake til labs</a
+          >
+        </nav>
+      </div>
+    </header>
+
+    <!-- MAIN -->
+    <main class="flex-1 container mx-auto px-4 py-10">
+      <h2 class="text-3xl md:text-4xl font-bold mb-6 text-center text-red-400">
+        Arduino-lab
+      </h2>
+      <p class="text-center text-gray-300 mb-6">
+        Bygg en virtuell Arduino med kode og koblingsbrett.
+      </p>
+
+      <!-- FLEX CONTAINER -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- KODE-EDITOR -->
+        <div>
+          <label for="code" class="block mb-2 font-semibold"
+            >Arduino-kode (C++)</label
+          >
+          <textarea
+            id="code"
+            class="w-full h-64 p-4 bg-gray-800 text-green-200 rounded-lg"
+            spellcheck="false"
+          >
+// Eksempel:
+void setup() {
+  pinMode(13, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(13, HIGH);
+  delay(500);
+  digitalWrite(13, LOW);
+  delay(500);
+}
+        </textarea
+          >
+
+          <button
+            onclick="runArduino()"
+            class="mt-4 bg-red-500 hover:bg-red-600 px-6 py-2 rounded font-semibold"
+          >
+            Simuler kode
+          </button>
+
+          <div class="mt-6">
+            <h3 class="text-lg font-semibold mb-2 text-gray-300">Konsoll:</h3>
+            <pre
+              id="output"
+              class="bg-black text-red-300 p-4 rounded min-h-[100px]"
+            >
+[Simulator ikke implementert ennå]</pre
+            >
+          </div>
+        </div>
+
+        <!-- KOMPONENT-BRETT (VISUELL DEL) -->
+        <div
+          id="breadboard"
+          class="bg-gray-800 rounded-lg p-4 h-[500px] flex flex-col items-center justify-start border-2 border-dashed border-gray-600 relative overflow-hidden"
+          ondragover="allowDrop(event)"
+          ondrop="dropComponent(event)"
+        >
+          <p class="text-gray-400 text-center mb-4">
+            Dra og slipp komponenter hit
+          </p>
+
+          <!-- Komponentikoner -->
+          <div class="absolute top-4 right-4 flex space-x-4 z-10">
+            <div
+              class="bg-red-500 w-8 h-8 rounded-full cursor-pointer"
+              draggable="true"
+              title="LED"
+              ondragstart="startDrag(event, 'led')"
+            ></div>
+            <div
+              class="bg-yellow-400 w-8 h-8 rounded cursor-pointer"
+              draggable="true"
+              title="Bryter"
+              ondragstart="startDrag(event, 'bryter')"
+            ></div>
+            <div
+              class="bg-blue-400 w-8 h-8 rounded cursor-pointer"
+              draggable="true"
+              title="Motstand"
+              ondragstart="startDrag(event, 'motstand')"
+            ></div>
+          </div>
+
+          <!-- ARDUINO-MODELL -->
+          <div class="mt-10">
+            <div
+              class="relative bg-gray-800 rounded-lg p-6 flex justify-center items-center"
+              style="height: 300px"
+            >
+              <!-- Pinnekolonne venstre (digital pins) -->
+              <div class="absolute left-4 top-6 flex flex-col space-y-2">
+                <button
+                  onclick="selectPin(13)"
+                  class="bg-gray-700 hover:bg-green-500 w-12 h-8 rounded text-xs"
+                >
+                  D13
+                </button>
+                <button
+                  onclick="selectPin(12)"
+                  class="bg-gray-700 hover:bg-green-500 w-12 h-8 rounded text-xs"
+                >
+                  D12
+                </button>
+                <button
+                  onclick="selectPin(11)"
+                  class="bg-gray-700 hover:bg-green-500 w-12 h-8 rounded text-xs"
+                >
+                  D11
+                </button>
+                <button
+                  onclick="selectPin(10)"
+                  class="bg-gray-700 hover:bg-green-500 w-12 h-8 rounded text-xs"
+                >
+                  D10
+                </button>
+                <button
+                  onclick="selectPin(9)"
+                  class="bg-gray-700 hover:bg-green-500 w-12 h-8 rounded text-xs"
+                >
+                  D9
+                </button>
+                <button
+                  onclick="selectPin(8)"
+                  class="bg-gray-700 hover:bg-green-500 w-12 h-8 rounded text-xs"
+                >
+                  D8
+                </button>
+              </div>
+
+              <!-- Pinnekolonne høyre (digital + analog) -->
+              <div class="absolute right-4 top-6 flex flex-col space-y-2">
+                <button
+                  onclick="selectPin(7)"
+                  class="bg-gray-700 hover:bg-green-500 w-12 h-8 rounded text-xs"
+                >
+                  D7
+                </button>
+                <button
+                  onclick="selectPin(6)"
+                  class="bg-gray-700 hover:bg-green-500 w-12 h-8 rounded text-xs"
+                >
+                  D6
+                </button>
+                <button
+                  onclick="selectPin(5)"
+                  class="bg-gray-700 hover:bg-green-500 w-12 h-8 rounded text-xs"
+                >
+                  D5
+                </button>
+                <button
+                  onclick="selectPin(4)"
+                  class="bg-gray-700 hover:bg-green-500 w-12 h-8 rounded text-xs"
+                >
+                  D4
+                </button>
+                <button
+                  onclick="selectPin(3)"
+                  class="bg-gray-700 hover:bg-green-500 w-12 h-8 rounded text-xs"
+                >
+                  D3
+                </button>
+                <button
+                  onclick="selectPin(2)"
+                  class="bg-gray-700 hover:bg-green-500 w-12 h-8 rounded text-xs"
+                >
+                  D2
+                </button>
+              </div>
+
+              <!-- Midtstykket (Arduino kropp) -->
+              <div
+                class="bg-blue-900 w-52 h-48 rounded-lg flex items-center justify-center text-white text-lg font-bold shadow-lg"
+              >
+                UNO
+              </div>
+            </div>
+          </div>
+
+          <!-- Søppelbøtte -->
+          <div
+            id="trash"
+            class="absolute bottom-4 left-1/2 -translate-x-1/2 w-32 h-12 bg-gray-700 rounded-lg flex items-center justify-center text-sm text-gray-300 border border-gray-500 transition-colors"
+          >
+            🗑️ Dra hit for å slette
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer
+      class="text-center text-gray-500 text-sm p-4 border-t border-gray-700 mt-auto"
+    >
+      © 2025 algoritmen.no – Arduino-lab
+    </footer>
+
+    <script>
+      function runArduino() {
+        const output = document.getElementById("output");
+        output.innerText = "[Her kan du simulere koden senere]";
+      }
+      let draggedComponentType = null;
+
+      function startDrag(event, type) {
+        draggedComponentType = type;
+      }
+
+      function allowDrop(event) {
+        event.preventDefault();
+      }
+
+      function dropComponent(event) {
+        event.preventDefault();
+        if (!draggedComponentType) return;
+
+        const board = document.getElementById("breadboard");
+
+        const newEl = document.createElement("div");
+        newEl.classList.add("absolute", "w-8", "h-8", "cursor-move");
+
+        switch (draggedComponentType) {
+          case "led":
+            newEl.classList.add("bg-red-500", "rounded-full");
+            break;
+          case "bryter":
+            newEl.classList.add("bg-yellow-400", "rounded");
+            break;
+          case "motstand":
+            newEl.classList.add("bg-blue-400", "rounded");
+            break;
+        }
+
+        const rect = board.getBoundingClientRect();
+        const x = event.clientX - rect.left - 16;
+        const y = event.clientY - rect.top - 16;
+
+        newEl.style.left = `${x}px`;
+        newEl.style.top = `${y}px`;
+
+        makeDraggable(newEl, board);
+        board.appendChild(newEl);
+        draggedComponentType = null;
+      }
+
+      function makeDraggable(el, container) {
+        let offsetX = 0,
+          offsetY = 0,
+          isDragging = false;
+
+        el.addEventListener("mousedown", function (e) {
+          isDragging = true;
+          offsetX = e.offsetX;
+          offsetY = e.offsetY;
+          el.style.zIndex = 1000;
+        });
+
+        document.addEventListener("mousemove", function (e) {
+          if (!isDragging) return;
+
+          const rect = container.getBoundingClientRect();
+          const trash = document.getElementById("trash");
+          const trashRect = trash.getBoundingClientRect();
+
+          let x = e.clientX - rect.left - offsetX;
+          let y = e.clientY - rect.top - offsetY;
+
+          x = Math.max(0, Math.min(x, container.clientWidth - el.offsetWidth));
+          y = Math.max(
+            0,
+            Math.min(y, container.clientHeight - el.offsetHeight)
+          );
+
+          el.style.left = `${x}px`;
+          el.style.top = `${y}px`;
+
+          // Fremhev søppelbøtta hvis over
+          const isOverTrash =
+            e.clientX >= trashRect.left &&
+            e.clientX <= trashRect.right &&
+            e.clientY >= trashRect.top &&
+            e.clientY <= trashRect.bottom;
+
+          trash.classList.toggle("bg-red-600", isOverTrash);
+          trash.classList.toggle("text-white", isOverTrash);
+        });
+
+        document.addEventListener("mouseup", function (e) {
+          if (!isDragging) return;
+          isDragging = false;
+          el.style.zIndex = 1;
+
+          const trash = document.getElementById("trash");
+          const trashRect = trash.getBoundingClientRect();
+
+          const isOverTrash =
+            e.clientX >= trashRect.left &&
+            e.clientX <= trashRect.right &&
+            e.clientY >= trashRect.top &&
+            e.clientY <= trashRect.bottom;
+
+          if (isOverTrash) {
+            el.remove(); // slett komponenten
+          }
+
+          trash.classList.remove("bg-red-600", "text-white");
+        });
+      }
+    </script>
+  </body>
+</html>

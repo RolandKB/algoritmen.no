@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="no">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Algoritmen.no – Lær ved å bygge</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-900 text-white font-mono min-h-screen flex flex-col">
+    <!-- HEADER -->
+    <header class="p-6 border-b border-gray-700">
+      <div class="container mx-auto flex justify-between items-center">
+        <h1 class="text-2xl font-bold text-green-400">algoritmen.no</h1>
+        <nav class="space-x-4">
+          <a href="#lab" class="hover:underline text-blue-400">Labs</a>
+          <a href="#about" class="hover:underline text-blue-400">Om</a>
+          <a href="#kontakt" class="hover:underline text-blue-400">Kontakt</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- HERO -->
+    <main class="flex-1 text-center px-4">
+      <div class="max-w-3xl mx-auto py-20">
+        <h2 class="text-4xl md:text-5xl font-bold mb-6">Simuler. Lær. Bygg.</h2>
+        <p class="text-xl mb-8 text-gray-300">
+          Kode direkte i nettleseren med JavaScript, Python, Arduino og mer.
+        </p>
+        <a
+          href="#lab"
+          class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg text-lg font-semibold"
+        >
+          Utforsk laboratoriet
+        </a>
+      </div>
+    </main>
+
+    <!-- LAB-SEKSJON -->
+    <section id="lab" class="bg-gray-800 py-16 px-6">
+      <div class="max-w-6xl mx-auto">
+        <h3 class="text-3xl font-bold text-center text-green-400 mb-10">
+          Velg et språk
+        </h3>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <a
+            href="/lab/javascript.html"
+            class="bg-gray-700 hover:bg-gray-600 p-6 rounded-xl shadow text-left transition"
+          >
+            <h4 class="text-xl font-bold text-blue-400 mb-2">JavaScript-lab</h4>
+            <p class="text-gray-300">
+              Test JS-kode og bygg små algoritmer direkte i nettleseren.
+            </p>
+          </a>
+          <a
+            href="/lab/python.html"
+            class="bg-gray-700 hover:bg-gray-600 p-6 rounded-xl shadow text-left transition"
+          >
+            <h4 class="text-xl font-bold text-yellow-300 mb-2">Python-lab</h4>
+            <p class="text-gray-300">
+              Kjør ekte Python med Pyodide og lær ved å eksperimentere.
+            </p>
+          </a>
+          <a
+            href="/lab/arduino.html"
+            class="bg-gray-700 hover:bg-gray-600 p-6 rounded-xl shadow text-left transition"
+          >
+            <h4 class="text-xl font-bold text-red-400 mb-2">Arduino-lab</h4>
+            <p class="text-gray-300">
+              Snart: simuler Arduino-programmering og I/O i nettleseren.
+            </p>
+          </a>
+          <a
+            href="/lab/cpp.html"
+            class="bg-gray-700 hover:bg-gray-600 p-6 rounded-xl shadow text-left transition"
+          >
+            <h4 class="text-xl font-bold text-purple-300 mb-2">C/C++-lab</h4>
+            <p class="text-gray-300">
+              Eksperimenter med lavnivåkode via WebAssembly (kommer snart).
+            </p>
+          </a>
+          <a
+            href="/lab/norskkode.html"
+            class="bg-gray-700 hover:bg-gray-600 p-6 rounded-xl shadow text-left transition"
+          >
+            <h4 class="text-xl font-bold text-pink-400 mb-2">
+              Kompilatør (norsk)
+            </h4>
+            <p class="text-gray-300">Bruk norsk syntaks.</p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer
+      id="kontakt"
+      class="text-center text-gray-500 text-sm p-4 border-t border-gray-700 mt-auto"
+    >
+      © 2025 algoritmen.no – Laget for nysgjerrige utviklere
+    </footer>
+  </body>
+</html>
